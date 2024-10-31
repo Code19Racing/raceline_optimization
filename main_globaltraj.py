@@ -33,20 +33,21 @@ plot_opts = {"mincurv_curv_lin": False,         # plot curv. linearization (orig
              "raceline_curv": True,             # plot curvature profile of optimized path
              "racetraj_vel": True,              # plot velocity profile
              "racetraj_vel_3d": False,          # plot 3D velocity profile above raceline
-             "racetraj_vel_3d_stepsize": 1.0,   # [m] vertical lines stepsize in 3D velocity profile plot
+             "racetraj_vel_3d_stepsize": 0.1,   # [m] vertical lines stepsize in 3D velocity profile plot
              "spline_normals": False,           # plot spline normals to check for crossings
-             "mintime_plots": False}            # plot states, controls, friction coeffs etc. (mintime only)
+             "mintime_plots": True}            # plot states, controls, friction coeffs etc. (mintime only)
 
 # select track file (including centerline coordinates + track widths) --------------------------------------------------
 # file_paths["track_name"] = "rounded_rectangle"                              # artificial track
 # file_paths["track_name"] = "handling_track"                                 # artificial track
-file_paths["track_name"] = "berlin_2018"                                    # Berlin Formula E 2018
+# file_paths["track_name"] = "berlin_2018"                                    # Berlin Formula E 2018
+file_paths["track_name"] = "Yas_Marina_TUM_BAD"
 # file_paths["track_name"] = "modena_2019"                                    # Modena 2019
 
 # set import options ---------------------------------------------------------------------------------------------------
 imp_opts = {"flip_imp_track": False,                # flip imported track to reverse direction
-            "set_new_start": False,                 # set new starting point (changes order, not coordinates)
-            "new_start": np.array([0.0, -47.0]),    # [x_m, y_m]
+            "set_new_start": True,                 # set new starting point (changes order, not coordinates)
+            "new_start": np.array([-189, -548]),    # [x_m, y_m]
             "min_track_width": None,                # [m] minimum enforced track width (set None to deactivate)
             "num_laps": 1}                          # number of laps to be driven (significant with powertrain-option),
                                                     # only relevant in mintime-optimization
@@ -68,7 +69,7 @@ opt_type = 'mintime'
 # recalc_vel_profile_by_tph:    override mintime velocity profile by ggv based calculation (see TPH package)
 
 mintime_opts = {"tpadata": None,
-                "warm_start": False,
+                "warm_start": True,
                 "var_friction": None,
                 "reopt_mintime_solution": False,
                 "recalc_vel_profile_by_tph": False}
@@ -156,7 +157,7 @@ file_paths["lap_time_mat_export"] = os.path.join(file_paths["module"], "outputs"
 # ----------------------------------------------------------------------------------------------------------------------
 
 # load vehicle parameter file into a "pars" dict
-parser = configparser.ConfigParser()
+parser = configparser.ConfigParser(inline_comment_prefixes=('#', ';'))
 pars = {}
 
 if not parser.read(os.path.join(file_paths["module"], "params", file_paths["veh_params_file"])):
@@ -433,7 +434,7 @@ if plot_opts["racetraj_vel"]:
     plt.xlabel("distance in m")
     plt.legend(["vx in m/s", "ax in m/s2", "t in s"])
 
-    plt.show()
+    # plt.show()
 
 # ----------------------------------------------------------------------------------------------------------------------
 # CALCULATE LAP TIMES (AT DIFFERENT SCALES AND TOP SPEEDS) -------------------------------------------------------------
